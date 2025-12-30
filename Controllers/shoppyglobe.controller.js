@@ -9,6 +9,11 @@ export async function addproducts(req,res)
 {
  
     try{
+        const alreadyexists=await shoppyModel.findOne(req.body)
+
+        if(alreadyexists)
+            return res.status(401).json({message:"item already exists"})
+
         const addedproduct=await shoppyModel.insertMany(req.body);
             return res.status(201).json({
             success: true,
@@ -160,6 +165,9 @@ export async function updatecartitem(req,res)
     }
 
 } 
+
+
+
 export async function deletecartitem(req,res)
 {
 

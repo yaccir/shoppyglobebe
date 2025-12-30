@@ -52,12 +52,14 @@ export async function verifytoken(req,res,next)
 
     try{
 
+        //jwt token verification
     jwt.verify(token,'SEARCHED_USER', 
         function(err, decoded) {
             
-        console.log(decoded) // bar
-});
+        console.log(decoded) 
         next();
+});
+        
 
     }
 

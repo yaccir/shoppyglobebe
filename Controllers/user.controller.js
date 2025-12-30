@@ -59,7 +59,7 @@ export async function userLogin(req,res)
                             }
 
 
-                           const token= jwt.sign(searcheduser.email, 'SEARCHED_USER');
+                           const token= jwt.sign({email:searcheduser.email}, 'SEARCHED_USER',{ expiresIn: '1h' });
 
                             return res.status(200).json({message:"welcome user",token})
                  
