@@ -1,11 +1,14 @@
 import userModel from "../../Models/User.model.js";
 import jwt from "jsonwebtoken";
 
+
+
+//middleware for verify the registration of user
 export async function verifyregisteruser(req,res,next)
 {
 
 const {email,mobileNumber}=req.body;
-console.log(req.body)
+
 
         try{
             const registerede=await userModel.findOne({
@@ -32,7 +35,8 @@ console.log(req.body)
 
 }
 
-
+//middleware for checking the token and user should be 
+// logged in to access the cart routes and action routes 
 export async function verifytoken(req,res,next)
 
 {

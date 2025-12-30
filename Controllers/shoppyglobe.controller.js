@@ -69,9 +69,11 @@ export async function fetchproductbyid(req,res)
 export async function addtocart(req,res)
 {
 
+
     const {productid,productQuantity}=req.body;
     try{
-        const newcartitem=cartModel.findOne({productId})
+        const newcartitem=await cartModel.findOne({productid})
+        console.log(newcartitem)
         // Check if product already in cart
         if(newcartitem)
         {
@@ -79,11 +81,12 @@ export async function addtocart(req,res)
         }
         else
         {
-            const cartitem=cartModel.create({
+            const cartitem= await cartModel.create({
                 productid,
                 productQuantity
             });
-          return  res.status(201).json(cartitem);
+            
+          return  res.status(201).json({cartitem ,"message":"item added successfully"});
         }
     }
     catch(err)
@@ -105,7 +108,7 @@ export  async function deleteproduct(req,res)
          return   res.status(404).json({"message":"product not found"});
 
         else{
-        return  res.status(200).json(deletedproduct)
+        return  res.status(200).json({message:"product deleted successfully"});
         }
     }
     catch(err)
@@ -134,38 +137,43 @@ export async function getcartitems(req,res)
 
 } 
 
-export async function updatecartitem()
+export async function updatecartitem(req,res)
 {
     const {id, quantity}=req.body;
     try{
-        const updatedcartitem= await cartModel.findByIdAndUpdate(id,{ productQuantity:quantity});
+        const updatedcartitem= await cartModel. findOneAndUpdate({productid:id}, 
+            { $set: { productQuantity: quantity } },  
+            { new: true });
 // Check if cart item exists
+       console.log(updatedcartitem)
         if(!updatedcartitem)
         {
+            console.log("Updated cart item:", updatedcartitem);
          return   res.status(404).json({message:"Cart item not found"});
         }
-      return  res.status(200).json(updatedcartitem);
+      return  res.status(200).json({message:"item updated"});
 
     }
     catch(err)
     {
-            return    res.status(500).json({message:err.message});
+            return      res.status(500).json({message:err.message});
     }
 
 } 
-export async function deletecartitem()
+export async function deletecartitem(req,res)
 {
 
     const {id}=req.body;
     try{
-        const deleteditem=await cartModel.findByIdAndDelete(id);
+        const deleteditem=await cartModel.findOneAndDelete({productid:id});
        // Check if cart item exists
+       console.log(deleteditem)
         if(!deleteditem)
         {
          return   res.status(404).json({message:"Cart item not found"});
         }
 
-      return  res.status(200).json(deleteditem);
+      return  res.status(200).json({deleteditem,message:"item deleted successfully"});
     }
     catch(err)
     {

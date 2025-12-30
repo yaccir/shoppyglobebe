@@ -18,8 +18,8 @@ export function shoppyRoutes(app) {
 // Cart Routes
     app.post("/cart",verifytoken,addtocart);
     app.get("/cart",verifytoken,getcartitems);
-    app.put("/cart/:id",verifytoken,updatecartitem);
-    app.delete("/cart/:id",verifytoken,deletecartitem);
+    app.put("/cart",verifytoken,updatecartitem);
+    app.delete("/cart",verifytoken,deletecartitem);
 
 //userlogin routes
     app.post("/register",verifyregisteruser,userRegister);
